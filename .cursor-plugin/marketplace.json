@@ -37,8 +37,8 @@
       "description": "Test authoring and execution: unit, E2E, and browser automation skills plus test engineer and test runner agents"
     },
     {
-      "name": "test-case-generator",
-      "source": "test-case-generator",
+      "name": "quality-assurance",
+      "source": "quality-assurance",
       "description": "Jira → exhaustive manual test case CSV generator (rules, skill, command, agent, Atlassian MCP)"
     }
   ]

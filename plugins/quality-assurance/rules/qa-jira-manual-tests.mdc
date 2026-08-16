@@ -1,21 +1,21 @@
 ---
-description: Always-on Jira → exhaustive manual test CSV rules (format, coverage, approval)
+description: Always-on Jira manual test CSV rules for sourcing, coverage, format, and output
 alwaysApply: true
 ---
 
 # Manual test cases from Jira
 
-For **any** request to generate manual test cases, QA CSV, story-to-test mapping, or Jira-driven test documentation, apply **all** of these together:
+For any request to generate manual test cases, QA CSV output, story-to-test mapping, or Jira-driven test documentation, apply all of these together:
 
-1. [Skill](../skills/senior-qa-engineer/SKILL.md)
+1. [Skill](../skills/generate-test-cases/SKILL.md)
 2. This rule
 3. [Command](../commands/generate-tests.md)
 
-Do not skip a layer. You are a Lead QA Mentor producing **executable manual** test cases only.
+Do not skip a layer. Produce executable manual test cases only.
 
-## Non‑negotiables
+## Non-negotiables
 
-- **Jira MCP only:** fetch live issues. Epic children JQL: `"Epic Link" = KEY OR parent = KEY OR "Parent Link" = KEY`; `maxResults` ≥ 100; **paginate** until complete; **full description** per issue; refetch if truncated. Never guess child lists.
+- **Jira MCP only:** fetch live issues. Epic children JQL: `"Epic Link" = KEY OR parent = KEY OR "Parent Link" = KEY`; `maxResults` ≥ 100; **paginate** until complete; **full description** per issue; refetch if truncated(try **max 3** times). Never guess child lists.
 - **Exhaustive coverage:** every bullet, table row, workflow step, error path, diagram/attachment note, cross-story E2E. Stop only on duplicate coverage, invented requirements, or user **cap** — never a fixed multiplier (e.g. 3× children).
 - **Expand beyond one-to-one AC mapping:**
   - Happy — requirements from summary/description/tables
@@ -34,23 +34,21 @@ Do not skip a layer. You are a Lead QA Mentor producing **executable manual** te
 "Test Case ID","Jira ID","Priority","Scenario","Pre-conditions","Test Data","Steps","Expected Result","Scenario Type"
 ```
 
-- **Steps:** numbered list with **newlines inside one quoted field**. Escape `"` as `""`.
-- **Path:** `tests/[PRIMARY_JIRA_KEY]_test_cases.csv`
-- **Scenario Type:** `Positive` | `Negative` | `Edge Case` | `UI/UX` | `End-to-End` only.
-- Details (column values, Priority): follow **senior-qa-engineer** skill.
+- Use strict RFC 4180 CSV.
+- Quote every cell.
+- Escape `"` as `""`.
+- Put numbered steps with newlines inside one quoted field.
+- Save to `tests/test-cases/[PRIMARY_JIRA_KEY]_test_cases.csv`.
+- Use only these priorities: `High`, `Medium`, `Low`.
+- Use only these scenario types: `Positive`, `Negative`, `Edge Case`, `UI/UX`, `End-to-End`.
 
-## Approval
-
-- User asks to **list/review first** → categorize scenarios and **wait**.
-- User says **generate now** / pastes only an Epic key / uses the prompt in `generate-tests.md` → write CSV immediately (short outline in the same reply is enough).
 
 ## After saving
-
 
 Print only the minimal Jira comment:
 
 1. `Manual Test Cases Generated`
-2. `CSV file:` as a clickable link to the generated CSV file created in the target Gitlab repo.
+2. `CSV file:` as a clickable link to the generated CSV file created in the target GitLab repo.
 3. Total test cases
 4. Priority counts (High/Medium/Low)
 5. Scenario Type counts
@@ -64,3 +62,4 @@ Do not include scope analyzed, issue type, acceptance criteria notes, sub-task c
 - Stop after the first JQL page
 - Use a numeric formula as the only stopping rule
 - Invent requirements
+- Commit Jira tokens, secrets, or real credentials

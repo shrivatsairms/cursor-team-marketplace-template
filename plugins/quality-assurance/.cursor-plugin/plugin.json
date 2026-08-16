@@ -1,0 +1,22 @@
+{
+  "name": "quality-assurance",
+  "displayName": "Test Case Generator",
+  "version": "0.1.0",
+  "description": "Generates exhaustive RFC 4180 manual test case CSVs from Jira Epics and Stories using Atlassian (Jira) MCP.",
+  "author": {
+    "name": "QA Team"
+  },
+  "license": "MIT",
+  "keywords": [
+    "cursor",
+    "plugin",
+    "qa",
+    "manual-testing",
+    "jira",
+    "test-cases",
+    "csv",
+    "atlassian",
+    "mcp"
+  ],
+  "logo": "assets/logo.svg"
+}

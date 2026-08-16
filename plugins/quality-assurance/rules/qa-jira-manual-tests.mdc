@@ -1,0 +1,65 @@
+---
+description: Always-on Jira manual test CSV rules for sourcing, coverage, format, and output
+alwaysApply: true
+---
+
+# Manual test cases from Jira
+
+For any request to generate manual test cases, QA CSV output, story-to-test mapping, or Jira-driven test documentation, apply all of these together:
+
+1. [Skill](../skills/generate-test-cases/SKILL.md)
+2. This rule
+3. [Command](../commands/generate-tests.md)
+
+Do not skip a layer. Produce executable manual test cases only.
+
+## Non-negotiables
+
+- **Jira MCP only:** fetch live issues. Epic children JQL: `"Epic Link" = KEY OR parent = KEY OR "Parent Link" = KEY`; `maxResults` ≥ 100; **paginate** until complete; **full description** per issue; refetch if truncated(try **max 3** times). Never guess child lists.
+- **Exhaustive coverage:** every bullet, table row, workflow step, error path, diagram/attachment note, cross-story E2E. Stop only on duplicate coverage, invented requirements, or user **cap** — never a fixed multiplier (e.g. 3× children).
+- **Expand beyond one-to-one AC mapping:**
+  - Happy — requirements from summary/description/tables
+  - Negative — invalid data, wrong order, failures, unauthorized use
+  - Edge — empty/large files, timeouts, missing metadata, duplicates
+  - UI/UX — loading, focus, messages, diagrams vs actual behavior
+  - End-to-End — Epic flows across multiple child stories
+- **No hallucination:** if description is empty, use summary only and say coverage is limited.
+- **No automation:** never Playwright, Robot, Selenium, or scripts.
+- **Forbidden in Steps / Expected Result:** Render, Prop, Component, Callback, State, Boolean, API, JSON, Interface; vague “check functionality”. Use physical actions or observable outcomes / team-approved manual procedures.
+- **Traceability:** default Epic key in **Jira ID** for every Epic-pack row; child key in Scenario / Test Data (unless user asks for child key in Jira ID).
+
+## CSV (RFC 4180 — exact header, all cells quoted)
+
+```text
+"Test Case ID","Jira ID","Priority","Scenario","Pre-conditions","Test Data","Steps","Expected Result","Scenario Type"
+```
+
+- Use strict RFC 4180 CSV.
+- Quote every cell.
+- Escape `"` as `""`.
+- Put numbered steps with newlines inside one quoted field.
+- Save to `tests/test-cases/[PRIMARY_JIRA_KEY]_test_cases.csv`.
+- Use only these priorities: `High`, `Medium`, `Low`.
+- Use only these scenario types: `Positive`, `Negative`, `Edge Case`, `UI/UX`, `End-to-End`.
+
+
+## After saving
+
+Print only the minimal Jira comment:
+
+1. `Manual Test Cases Generated`
+2. `CSV file:` as a clickable link to the generated CSV file created in the target GitLab repo.
+3. Total test cases
+4. Priority counts (High/Medium/Low)
+5. Scenario Type counts
+
+Do **not** dump the full CSV in chat.
+Do not include scope analyzed, issue type, acceptance criteria notes, sub-task count, parent Epic, attachments, linked documents, Figma/design links, comments reviewed, Cloud Agent run URL, or generated-by footer unless explicitly requested.
+
+## Never
+
+- Skip Epic children
+- Stop after the first JQL page
+- Use a numeric formula as the only stopping rule
+- Invent requirements
+- Commit Jira tokens, secrets, or real credentials

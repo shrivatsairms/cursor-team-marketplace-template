@@ -1,5 +1,5 @@
 ---
-name: test-case-generator
+name: qa-engineer
 description: >
   Generates exhaustive manual test case CSVs from Jira Epics and Stories using
   Atlassian/Jira MCP. Use when the user asks for manual test cases, QA CSV,

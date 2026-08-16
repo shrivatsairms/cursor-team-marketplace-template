@@ -12,3 +12,6 @@
 *.log
 tmp/
 temp/
+
+# VS Code IDE specific folder
+.vscode/
